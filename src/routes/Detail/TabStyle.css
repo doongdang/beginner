@@ -1,0 +1,25 @@
+.tab-list {
+  width: 100%;
+  color: lightgreen;
+  border-bottom: 1px solid #ccc;
+  padding-left: 0;
+}
+
+.tab-list-item {
+  display: inline-block;
+  margin-top: 15px;
+  list-style: none;
+  margin-bottom: -1px;
+  padding: 0.5rem 0.75rem;
+}
+
+.tab-list-active {
+  border: solid #ccc;
+
+  width: 40%;
+  border-width: 1px 1px 0 1px;
+}
+
+.tab-content {
+  margin-top: 10px;
+}

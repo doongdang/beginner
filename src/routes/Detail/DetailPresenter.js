@@ -5,6 +5,9 @@ import styled from "styled-components";
 import Loader from "components/Loader";
 import Message from "../../components/Message";
 import Tabs from "./Tabs";
+import Product from "./Product";
+import Procoun from "./Procoun";
+
 require("./TabStyle.css");
 
 const Container = styled.div`
@@ -128,6 +131,12 @@ const DetailPresenter = ({ result, loading, error }) =>
             </Item>
             <Divider>•</Divider>
             <Item>
+              {window.location.pathname.includes("show")
+                ? result.seasons[result.seasons.length - 1].name
+                : result.status}
+            </Item>
+            <Divider>•</Divider>
+            <Item>
               <a
                 rel="noopener noreferrer"
                 href={`https://www.imdb.com/title/${result.imdb_id}`}
@@ -141,21 +150,56 @@ const DetailPresenter = ({ result, loading, error }) =>
 
           <Tabs>
             <div label="Youtube Trailer">
-              <a
-                rel="noopener noreferrer"
-                href={`https://www.youtube.com/watch?v=${result.videos.results[0].key}`}
-                target="_blank"
-              >
-                Trailer Video
-              </a>
-
-              {console.log(result.videos.results[0].key)}
+              {result.videos.results[0] !== undefined ? (
+                <a
+                  rel="noopener noreferrer"
+                  href={`https://www.youtube.com/watch?v=${result.videos.results[0].key}`}
+                  target="_blank"
+                >
+                  <em>Official Trailer Video With Youtube</em>
+                </a>
+              ) : (
+                <span>"No Information"</span>
+              )}
             </div>
-            <div label="Croc">
-              After 'while, <em>Crocodile</em>!
+            <div label="Production Companies">
+              {result.production_companies.length !== 0 ? (
+                result.production_companies.map(company => {
+                  return (
+                    <Product
+                      key={company.id}
+                      title={company.name}
+                      poster={company.logo_path}
+                    />
+                  );
+                })
+              ) : (
+                <span>No Information</span>
+              )}
             </div>
-            <div label="Sarcosuchus">
-              Nothing to see here, this tab is <em>extinct</em>!
+            <div
+              label={
+                window.location.pathname.includes("movie")
+                  ? "Production Contries"
+                  : "Created By"
+              }
+            >
+              {window.location.pathname.includes("movie")
+                ? result.production_countries.map(country => {
+                    return (
+                      <Procoun key={country.iso_3166_1} title={country.name} />
+                    );
+                  })
+                : result.created_by.map(created => {
+                    return (
+                      <Product
+                        key={created.id}
+                        title={created.name}
+                        poster={created.profile_path}
+                      />
+                    );
+                  })}
+              {console.log(result)}
             </div>
           </Tabs>
         </Data>
